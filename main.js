@@ -29,10 +29,12 @@ const camera = new THREE.PerspectiveCamera(
 	1000
 );
 
-const orbit = new OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
 
 camera.position.set(-90, 140, 140);
-orbit.update();
+controls.update();
 
 const ambientLight = new THREE.AmbientLight(0x333333);
 scene.add(ambientLight);
