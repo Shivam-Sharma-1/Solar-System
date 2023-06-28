@@ -56,17 +56,29 @@ const sunMat = new THREE.MeshBasicMaterial({
 const sun = new THREE.Mesh(sunGeo, sunMat);
 scene.add(sun);
 
-const mercuryGeo = new THREE.SphereGeometry(3.2, 30, 30);
-const mercuryMat = new THREE.MeshStandardMaterial({
-	map: textureLoader.load(mercuryTexture)
-});
-const mercury = new THREE.Mesh(mercuryGeo, mercuryMat);
-sun.add(mercury);
-mercury.position.x = 28;
+function createPlanet(size, texture, position) {
+	const geo = new THREE.SphereGeometry(size, 30, 30);
+	const mat = new THREE.MeshStandardMaterial({
+		map: textureLoader.load(texture)
+	});
+	const mesh = new THREE.Mesh(geo, mat);
+	const obj = new THREE.Object3D();
+	obj.add(mesh);
+	scene.add(obj);
+	mesh.position.x = position;
+
+	return { mesh, obj };
+}
+
+const mercury = createPlanet(3.2, mercuryTexture, 28);
+
+const pointLight = new THREE.PointLight(0xffffff, 2, 300);
+scene.add(pointLight);
 
 function animate() {
 	sun.rotateY(0.004);
-	mercury.rotateY(0.004);
+	mercury.mesh.rotateY(0.004);
+	mercury.obj.rotateY(0.04);
 
 	renderer.render(scene, camera);
 }
