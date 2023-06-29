@@ -86,6 +86,27 @@ function createPlanet(size, texture, position, ring) {
 	scene.add(obj);
 	mesh.position.x = position;
 
+	const curve = new THREE.EllipseCurve(
+		0,
+		0,
+		position,
+		position,
+		0,
+		2 * Math.PI
+	);
+	const point = curve.getSpacedPoints(200);
+
+	const lineGeo = new THREE.BufferGeometry().setFromPoints(point);
+	const lineMat = new THREE.LineBasicMaterial({
+		color: 0xffffff,
+		transparent: true,
+		opacity: 0.2
+	});
+
+	const orbit = new THREE.Line(lineGeo, lineMat);
+	orbit.rotateX(-Math.PI / 2);
+	scene.add(orbit);
+
 	return { mesh, obj };
 }
 
@@ -140,5 +161,6 @@ renderer.setAnimationLoop(animate);
 window.addEventListener("resize", function () {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
+	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 });
