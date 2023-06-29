@@ -53,7 +53,12 @@ const textureLoader = new THREE.TextureLoader();
 
 const sunGeo = new THREE.SphereGeometry(16, 30, 30);
 const sunMat = new THREE.MeshBasicMaterial({
-	map: textureLoader.load(sunTexture)
+	map: textureLoader.load(sunTexture, function (texture) {
+		texture.needsUpdate = true;
+		texture.encoding = THREE.sRGBEncoding;
+		// texture.generateMipmaps = false;
+		// texture.magFilter = THREE.NearestFilter;
+	})
 });
 const sun = new THREE.Mesh(sunGeo, sunMat);
 scene.add(sun);
@@ -61,7 +66,12 @@ scene.add(sun);
 function createPlanet(size, texture, position, ring) {
 	const geo = new THREE.SphereGeometry(size, 30, 30);
 	const mat = new THREE.MeshStandardMaterial({
-		map: textureLoader.load(texture)
+		map: textureLoader.load(texture, function (texture) {
+			texture.needsUpdate = true;
+			texture.encoding = THREE.sRGBEncoding;
+			// texture.generateMipmaps = false;
+			// texture.magFilter = THREE.LinearFilter;
+		})
 	});
 	const mesh = new THREE.Mesh(geo, mat);
 	const obj = new THREE.Object3D();
